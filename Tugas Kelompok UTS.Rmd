@@ -1,0 +1,80 @@
+---
+title: "Project Metode Perancangan Percobaan"
+author: "Sandra Berliana Putri"
+date: "2024-03-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#### Import Data
+
+```{r}
+library(readxl)
+DataTinggi<-read_xlsx("C:\\Users\\ASUS\\Downloads\\Tugas Kelompok UTS.xlsx")
+knitr::kable(DataTinggi)
+```
+
+```{r}
+DataTinggi$Varietas<-as.factor(DataTinggi$Varietas)
+DataTinggi$Pupuk<-as.factor(DataTinggi$Pupuk)
+DataTinggi$Kelompok<-as.factor(DataTinggi$Kelompok)
+AnovaFakRAKL<-aov(Tinggi~Varietas*Pupuk+Kelompok,data=DataTinggi)
+summary(AnovaFakRAKL)
+qf(0.05,2,28,lower.tail = F)
+qf(0.05,4,28,lower.tail = F)
+qf(0.05,8,28,lower.tail = F)
+```
+Berdasarkan hasil pengujian dengan ANOVA, diperoleh hasil bahwa:
+1. Tolak $H_0$ pada varietas. Terdapat perbedaan pengaruh varietas terhadap tinggi tanaman pada taraf nyata 5%.
+2. Tolak $H_0$ pada pupuk. Terdapat perbedaan pengaruh pupuk terhadap tinggi tanaman pada taraf nyata 5%.
+3. Tolak $H_0$ pada interaksi varietas dengan tanaman. Terdapat perbedaan pengaruh interaksi varietas dengan tanaman terhadap tinggi tanaman pada taraf nyata 5%.
+4. Tak tolak $H_0$ pada kelompok. Tidak terdapat perbedaan pengaruh kelompok terhadap tinggi tanaman pada taraf nyata 5%.
+
+#### Plot Interaksi
+```{r}
+library(phia)
+ModelFakRAKL<-lm(Tinggi~Varietas*Pupuk+Kelompok,data=DataTinggi)
+im2<-interactionMeans(ModelFakRAKL)
+plot(im2)
+```
+Terlihat pada plot interaksi bahwa tidak ada interaksi pada pengelompokan sesuai yang diharapkan.
+
+
+#### Import Data
+
+```{r}
+library(readxl)
+DatapH<-read_xlsx("C:\\Users\\ASUS\\Downloads\\Tugas Kelompok UTS.xlsx",sheet=2)
+knitr::kable(DatapH)
+```
+
+```{r}
+DatapH$Sitrat<-as.factor(DatapH$Sitrat)
+DatapH$Gula<-as.factor(DatapH$Gula)
+DatapH$Kelompok<-as.factor(DatapH$Kelompok)
+AnovaFakRAKL<-aov(pH~Sitrat*Gula+Kelompok,data=DatapH)
+summary(AnovaFakRAKL)
+qf(0.05,2,28,lower.tail = F)
+qf(0.05,4,28,lower.tail = F)
+qf(0.05,8,28,lower.tail = F)
+```
+Berdasarkan hasil pengujian dengan ANOVA, diperoleh hasil bahwa:
+1. Tolak $H_0$ pada konsentrasi asam sitrat. Terdapat perbedaan pengaruh konsentrasi asam sitrat terhadap pH sirup jeruk pada taraf nyata 5%.
+2. Tak Tolak $H_0$ pada konsentrasi gula. Tidak terdapat perbedaan pengaruh konsentrasi gula terhadap pH sirup jeruk pada taraf nyata 5%.
+3. Tak tolak $H_0$ pada interaksi konsentrasi asam sitrat dengan konsentrasi gula. Tidak terdapat perbedaan pengaruh konsentrasi asam sitrat dengan konsentrasi gula terhadap pH sirup jeruk pada taraf nyata 5%.
+4. Tak tolak $H_0$ pada kelompok. Tidak terdapat perbedaan pengaruh kelompok terhadap pH sirup jeruk pada taraf nyata 5%.
+
+#### Plot Interaksi
+```{r}
+library(phia)
+ModelFakRAKL<-lm(pH~Sitrat*Gula+Kelompok,data=DatapH)
+im2<-interactionMeans(ModelFakRAKL)
+plot(im2)
+```
+Terlihat pada plot interaksi bahwa tidak ada interaksi pada pengelompokan sesuai yang diharapkan.
+
+
